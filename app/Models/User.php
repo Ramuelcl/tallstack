@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+// Spatie
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -17,7 +19,8 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+    // Spatie
+    use HasRoles;
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +30,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_photo_path',
+        'is_active',
     ];
 
     /**
@@ -48,6 +53,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -56,6 +62,47 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        'profile_photo_path',
     ];
+
+    /**mutators = mutadores */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+    public function userSetting()
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
+    // filtra por campo y que sea true o activo
+    public function scopeActive($query)
+    {
+        $query->where('is_active', 1);
+    }
+
+    // filtra por campo Role
+    public function scopeRole($query, $rol)
+    {
+        if (!empty($rol)) {
+            $paso = $query->whereHas('roles', function ($query) use ($rol) {
+                $query->where('name', $rol);
+            });
+            // dd($rol, $paso);
+            return $paso;
+        }
+    }
+
+    // relacion 1:1
+    public function perfil()
+    {
+        // $perfil = Perfil::where('user_id', $this->id)->first();
+        // return $perfil;
+
+        // otra opcion
+        // return $this->hasOne('App\Models\Backend\Perfil', 'foreign_key', 'local_key');
+
+        // la que más se utiliza
+        return $this->hasOne(Perfil::class); //, 'foreign_key', 'local_key'
+    }
 }

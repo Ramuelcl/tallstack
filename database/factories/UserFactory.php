@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Team;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Laravel\Jetstream\Features;
+use App\Models\Team;
+
+use App\Models\User;
 
 class UserFactory extends Factory
 {
@@ -20,27 +22,81 @@ class UserFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function definition(): array
+    public function definition()
     {
+        $linkFolder = $_SERVER['DOCUMENT_ROOT'];
+        $storage_path = '/storage/avatars';
+
+        $filePath = $linkFolder . $storage_path;
+        // Storage::deleteDirectory($filePath);
+
+        $name = $this->faker->lastName();
+        $prename = $this->faker->unique()->firstName();
+
+        $i = $this->faker->numberBetween($min = 0, $max = 6);
+        if ($i == 0) {
+            $email = "$name$prename";
+        } elseif ($i == 1) {
+            $email = "$prename.$name";
+        } elseif ($i == 2) {
+            $email = "$name.$prename";
+        } elseif ($i == 3) {
+            $email = "$prename$name";
+        } elseif ($i == 4) {
+            $email = $name . '_' . $prename;
+        } elseif ($i == 5) {
+            $email = $prename . '_' . $name;
+        } else {
+            $email = $this->faker->userName();
+        }
+
+        $email = fncCambiaCaracteresEspeciales($email);
+
+        // $avatar0 = $this->faker->image(
+        //     $dir = asset($filePath),
+        //     $width = 640,
+        //     $height = 480,
+        //     $category = getIniciales($prename . ' ' . $name), /* usado como texto sobre la imagen,default null */
+        //     $fullPath = false,
+        //     $randomize = true, // it's a no randomize images (default: `true`)
+        //     $word = null, //it's a filename without path
+        //     $gray = false,
+        //     $format = 'png'
+        // );
+
+        $avatar1 = $this->faker->imageUrl(
+            $width = 640,
+            $height = 480,
+            $category = getIniciales($prename . ' ' . $name),
+            $randomize = false,
+            $word = null,
+            $gray = true
+        );
+
+        // dump($avatar1);
+        //
+        // TODO: registrar foto en directorio, no se queda, se borra sola inmediatamente
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => $name . " " . $prename,
+            // 'prename' => $prename,
+            'email' => $email . '@' . $this->faker->freeEmailDomain(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
+            'profile_photo_path' => $avatar1,
+            'is_active' => $this->faker->boolean(80),
+            // 'password' => Hash::make('password'),
+            'password' => 'password',
             'remember_token' => Str::random(10),
-            'profile_photo_path' => null,
-            'current_team_id' => null,
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function unverified(): static
+    public function unverified()
     {
         return $this->state(function (array $attributes) {
             return [
@@ -51,17 +107,19 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the user should have a personal team.
+     *
+     * @return $this
      */
-    public function withPersonalTeam(): static
+    public function withPersonalTeam()
     {
-        if (! Features::hasTeamFeatures()) {
+        if (!Features::hasTeamFeatures()) {
             return $this->state([]);
         }
 
         return $this->has(
             Team::factory()
                 ->state(function (array $attributes, User $user) {
-                    return ['name' => $user->name.'\'s Team', 'user_id' => $user->id, 'personal_team' => true];
+                    return ['name' => $user->name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
                 }),
             'ownedTeams'
         );

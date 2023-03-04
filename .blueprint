@@ -1,0 +1,59 @@
+created:
+    - database/factories/backend/CategoriaFactory.php
+    - database/factories/backend/PerfilFactory.php
+    - database/factories/backend/UserSettingFactory.php
+    - database/factories/backend/MarcadorFactory.php
+    - database/factories/backend/PaisFactory.php
+    - database/factories/backend/CiudadFactory.php
+    - database/factories/backend/DireccionFactory.php
+    - database/factories/backend/TelefonoFactory.php
+    - database/factories/backend/TablaFactory.php
+    - database/factories/ventas/ClienteFactory.php
+    - database/factories/compras/VendedorFactory.php
+    - database/factories/banca/TraspasoFactory.php
+    - database/factories/banca/MovimientoFactory.php
+    - database/migrations/2023_03_04_160119_create_categorias_table.php
+    - database/migrations/2023_03_04_160120_create_perfils_table.php
+    - database/migrations/2023_03_04_160121_create_user_settings_table.php
+    - database/migrations/2023_03_04_160122_create_marcadors_table.php
+    - database/migrations/2023_03_04_160123_create_pais_table.php
+    - database/migrations/2023_03_04_160124_create_ciudads_table.php
+    - database/migrations/2023_03_04_160125_create_direccions_table.php
+    - database/migrations/2023_03_04_160126_create_telefonos_table.php
+    - database/migrations/2023_03_04_160127_create_tablas_table.php
+    - database/migrations/2023_03_04_160128_create_clientes_table.php
+    - database/migrations/2023_03_04_160129_create_vendedors_table.php
+    - database/migrations/2023_03_04_160130_create_traspasos_table.php
+    - database/migrations/2023_03_04_160131_create_movimientos_table.php
+    - database/migrations/2023_03_04_160132_create_categoriaables_table.php
+    - database/migrations/2023_03_04_160133_create_marcadorables_table.php
+    - database/migrations/2023_03_04_160134_create_direccionables_table.php
+    - database/migrations/2023_03_04_160135_create_telefonoables_table.php
+    - app/Models/backend/Categoria.php
+    - app/Models/backend/Perfil.php
+    - app/Models/backend/UserSetting.php
+    - app/Models/backend/Marcador.php
+    - app/Models/backend/Pais.php
+    - app/Models/backend/Ciudad.php
+    - app/Models/backend/Direccion.php
+    - app/Models/backend/Telefono.php
+    - app/Models/backend/Tabla.php
+    - app/Models/ventas/Cliente.php
+    - app/Models/compras/Vendedor.php
+    - app/Models/banca/Traspaso.php
+    - app/Models/banca/Movimiento.php
+models:
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, two_factor_secret: 'text nullable', two_factor_recovery_codes: 'text nullable', two_factor_confirmed_at: 'datetime nullable', remember_token: 'string:100 nullable', current_team_id: 'biginteger unsigned nullable', profile_photo_path: 'string:2048 nullable', is_active: 'boolean nullable' }
+    backend\Categoria: { nombre: 'string:45 nullable default:null unique', babosa: "string:45 nullable default:null charset:'utf8'", softdeletes: softDeletes, relationships: { morphedByMany: 'Post, Video, Imagen' } }
+    backend\Perfil: { id: false, user_id: 'id foreign:users.id primary', edad: unsignedTinyInteger, id_profesion: 'unsignedTinyInteger nullable default:null', biografia: "longtext default:null charset:'utf8'", website: "string:128 default:null charset:'utf8'", softdeletes: softDeletes, relationships: { hasOne: 'User:user1' } }
+    backend\UserSetting: { id: false, user_id: 'id foreign:users.id', theme: "string:20 default:'dark' charset:'utf8'", language: "string:5 default:'fr-FR' charset:'utf8'", autologin: 'boolean default:true', softdeletes: softDeletes, relationships: { hasOne: 'User:user1' } }
+    backend\Marcador: { nombre: "string:45 nullable default:null unique charset:'utf8'", babosa: "string:45 nullable default:null charset:'utf8'", hexa: "string:7 unique default:'#' charset:'utf8'", rgb: "string:20 nullable default:null charset:'utf8'", metadata: 'json nullable', activo: 'boolean default:true', softdeletes: softDeletes, relationships: { morphedByMany: 'Post:xPost, Video:xVideo, Imagen:xImagen, Movimiento:xMovimiento' } }
+    backend\Pais: { nombre: 'string:50 unique', bandera: 'string:128 nullable default:null', idioma: 'string:5 nullable default:null', timestamps: false, relationships: { BelongsTo: 'Ciudad:ciudades' } }
+    backend\Ciudad: { nombre: 'string:50 nullable default:null', pais_id: 'id foreign nullable default:null', timestamps: false, relationships: { BelongsTo: 'Direccion:direcciones' } }
+    backend\Direccion: { numero: 'string:8', calle: 'string:50', codPostal: 'string:6', ciudad_id: 'id:Ciudad foreign nullable default:null', relationships: { morphedByMany: 'Cliente:xCliente, Vendedor:xVendedor' } }
+    backend\Telefono: { tipo: 'string:2', numero: 'string:13', relationships: { morphedByMany: 'Cliente:xCliente, Vendedor:xVendedor' } }
+    backend\Tabla: { id: false, tabla: bigInteger, tabla_id: bigInteger, nombre: "string:45 charset:'utf8'", descripcion: "string:128 nullable default:null charset:'utf8'", activo: 'boolean nullable default:true', valor1: 'decimal:8,2 nullable default:null', valor2: 'string:128 nullable default:null', valor3: 'boolean nullable default:false', indexes: [{ primary: 'tabla, tabla_id' }, { index: nombre }], softdeletes: softDeletes }
+    ventas\Cliente: { razonSocial: 'string:128', nombres: 'string:80', apellidos: 'string:80', activo: 'boolean default:true', eMail: 'string unique', timestamps: false }
+    compras\Vendedor: { razonSocial: 'string:128', nombres: 'string:80', apellidos: 'string:80', activo: 'boolean default:true', eMail: 'string unique', timestamps: false }
+    banca\Traspaso: { dateImportation: 'date nullable default_format:"Y-m-d"', libelle: text, montant: 'decimal:8,2 nullable default:0', archivo: 'string:100 nullable default:null', dupTxt: "text charset:'utf8'", archivado: 'unsignedBigInteger nullable default:0', timestamps: false }
+    banca\Movimiento: { cuenta: 'string:12 nullable default:5578733W020', tipo: 'string:3 nullable default:CCP', dateMouvement: 'date nullable default_format:"Y-m-d"', libelle: text, montant: 'decimal:8,2', cliente_id: 'bigInteger nullable default:null', releve: 'bigInteger nullable default:null', dateReleve: 'date nullable default_format:"Y-m-d"', indexes: [{ index: 'cuenta, dateMouvement' }], softdeletes: softDeletes }

@@ -1,0 +1,131 @@
+# ==== base0.yml ======================================
+models:
+  backend\Categoria:
+    nombre: string:45 nullable default:null unique
+    babosa: string:45 nullable default:null charset:'utf8'
+    softDeletes: true
+    relationships:
+      morphedByMany: Post, Video, Imagen
+
+  backend\Perfil:
+    id: false
+    user_id: id foreign:users.id primary
+    edad: unsignedTinyInteger
+    id_profesion: unsignedTinyInteger nullable default:null
+    biografia: longtext default:null charset:'utf8'
+    website: string:128 default:null charset:'utf8'
+    softDeletes: true
+    relationships:
+      hasOne: User:user1
+
+  backend\UserSetting:
+    id: false
+    user_id: id foreign:users.id
+    theme: string:20 default:'dark' charset:'utf8'
+    language: string:5 default:'fr-FR' charset:'utf8'
+    autologin: boolean default:true
+    softDeletes: true
+    relationships:
+      hasOne: User:user1
+
+  backend\Marcador:
+    nombre: string:45 nullable default:null unique charset:'utf8'
+    babosa: string:45 nullable default:null charset:'utf8'
+    hexa: string:7 unique default:'#' charset:'utf8'
+    rgb: string:20 nullable default:null charset:'utf8'
+    metadata: json nullable
+    activo: boolean default:true
+    softDeletes: true
+    relationships:
+      morphedByMany: Post:xPost, Video:xVideo, Imagen:xImagen, Movimiento:xMovimiento
+
+  backend\Pais:
+    nombre: string:50 unique
+    bandera: string:128 nullable default:null
+    idioma: string:5 nullable default:null
+    timestamps: false
+    relationships:
+      BelongsTo: Ciudad:ciudades
+
+  backend\Ciudad:
+    nombre: string:50 nullable default:null
+    pais_id: id foreign nullable default:null
+    timestamps: false
+    relationships:
+      BelongsTo: Direccion:direcciones
+
+  backend\Direccion:
+    numero: string:8
+    calle: string:50
+    codPostal: string:6
+    ciudad_id: id:Ciudad foreign nullable default:null
+    relationships:
+      morphedByMany: Cliente:xCliente, Vendedor:xVendedor
+
+  backend\Telefono:
+    tipo: string:2
+    numero: string:13
+    relationships:
+      morphedByMany: Cliente:xCliente, Vendedor:xVendedor
+
+  backend\Tabla:
+    id: false
+    tabla: bigInteger
+    tabla_id: bigInteger
+    nombre: string:45 charset:'utf8'
+    descripcion: string:128 nullable default:null charset:'utf8'
+    activo: boolean nullable default:true
+    valor1: decimal:8,2 nullable default:null
+    valor2: string:128 nullable default:null
+    valor3: boolean nullable default:false
+    indexes:
+      - primary: tabla, tabla_id
+      - index: nombre
+    softDeletes: true
+
+  ventas\Cliente:
+    razonSocial: string:128
+    nombres: string:80
+    apellidos: string:80
+    activo: boolean default:true
+    eMail: string unique
+    timestamps: false
+    # relationships:
+      # hasMany: Direccion:xDirecciones, Telefono:xTelefonos
+      # morphedByMany: Cliente:xEntidades
+      # BelongsToMany: Movimiento:xMovimientos
+
+  compras\Vendedor:
+    razonSocial: string:128
+    nombres: string:80
+    apellidos: string:80
+    activo: boolean default:true
+    eMail: string unique
+    timestamps: false
+    # relationships:
+    #   hasMany: Direccion:xDirecciones, Telefono:xTelefonos
+    #   morphedByMany: Vendedor:xEntidades
+
+  banca\Traspaso:
+    dateImportation: date nullable default_format:"Y-m-d"
+    libelle: text
+    montant: decimal:8,2 nullable default:0
+    archivo: string:100 nullable default:null
+    dupTxt: text charset:'utf8'
+    archivado: unsignedBigInteger nullable default:0
+    timestamps: false
+
+  banca\Movimiento:
+    cuenta: string:12 nullable default:5578733W020
+    tipo: string:3 nullable default:CCP
+    dateMouvement: date nullable default_format:"Y-m-d"
+    libelle: text
+    montant: decimal:8,2
+    cliente_id: bigInteger nullable default:null
+    releve: bigInteger nullable default:null
+    dateReleve: date nullable default_format:"Y-m-d"
+    indexes:
+      - index: cuenta, dateMouvement
+    softDeletes: true
+
+# seeder: Pais, Ciudad, Direccion, Entidad, Tabla
