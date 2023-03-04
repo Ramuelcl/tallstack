@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\cargaliveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'App\Http\Controllers'], function () {
+    //
+    Route::get('/', 'PagesController@index')->name('pages.index');
+    Route::get('/dashboard', 'PagesController@index')->name('pages.index');
+    //
+    Route::get('/about', 'PagesController@about')->name('pages.about');
+    Route::get('/contact ', 'PagesController@contact')->name('pages.contact');
+    Route::get('/welcome', 'PagesController@welcome')->name('pages.welcome');
+    Route::get('/master', 'PagesController@master')->name('pages.master');
+
+    Route::get('/linkstorage', function () {
+        $targetFolder = base_path() . '/storage/app/public';
+        $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage';
+        dump($targetFolder, $linkFolder);
+    });
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/users', [cargaliveController::class, 'usersIndex'])->name('users.usersIndex');
+    Route::get('/roles', [UserController::class, 'rolesIndex'])->name('users.rolesIndex');
+    Route::get('/permissions', [UserController::class, 'permissionsIndex'])->name('users.permissionsIndex');
 });
-
-require __DIR__.'/auth.php';

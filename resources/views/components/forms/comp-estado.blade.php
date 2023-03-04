@@ -1,0 +1,3 @@
+<div>
+    {{$estado}}
+</div>
