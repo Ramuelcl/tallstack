@@ -8,4 +8,7 @@
             </div>
         </div>
     </div>
+    @push('modals')
+    @livewire('live-modal')
+    @endpush
 </x-layout>

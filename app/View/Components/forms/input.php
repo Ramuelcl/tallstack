@@ -3,13 +3,13 @@
 namespace App\View\Components\forms;
 
 use Illuminate\View\Component;
-use Livewire\WithFileUploads;
+// use Livewire\WithFileUploads;
 
 class input extends Component
 {
-    use WithFileUploads;
+    // use WithFileUploads;
 
-    public $label, $placeholder, $idName, $type;
+    public $idName, $type, $label, $placeholder;
     /**
      * Create a new component instance.
      *
@@ -17,10 +17,10 @@ class input extends Component
      */
     public function __construct(string $idName, string  $type = 'text', string $label = '', string $placeholder = '')
     {
-        $this->label = $label;
-        $this->placeholder = $placeholder;
         $this->idName = $idName;
         $this->type = $type;
+        $this->label = $label;
+        $this->placeholder = $placeholder;
     }
 
     /**

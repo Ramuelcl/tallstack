@@ -22,11 +22,11 @@ class LiveuserTable extends Component
     public $collectionViews = array('5', '10', '25', '50');
 
     // elemento de busqueda
-    public $bSearch;
+    public $bSearch = true;
     public $search;
 
     // elemento activo
-    public $bActive;
+    public $bActive = true;
     public $activeAll;
 
     // elemento roles
@@ -40,7 +40,9 @@ class LiveuserTable extends Component
     // control de modales
     public $ModalAddEdit = true;
     public $ModalDelete = false;
-    public $title;
+
+    public $mode = null; // modo false=agregar registro, true=editar registro
+    public $title; // titulo del modal
 
 
     // campos de la tabla
@@ -116,8 +118,7 @@ class LiveuserTable extends Component
 
     /** variables  */
     public $TotalRegs = 0;
-    public $mode = null;
-    public $showModal = 'hidden';
+
     public $DeleteConfirm = 0;
     public $filePath = 'storage/avatars';
 
@@ -143,13 +144,10 @@ class LiveuserTable extends Component
         'sortDir' => ['except' => 'Desc'],
     ];
 
-    public function __construct($bSearch = true, $bActive = true)
+    public function __construct()
     {
         // $this->Model =  User::class;
         // dd($this->Model);
-
-        $this->bSearch = $bSearch;
-        $this->bActive = $bActive;
     }
     public function mount()
     {
@@ -244,35 +242,47 @@ class LiveuserTable extends Component
         ];
     }
 
-    public function fncNewEdit($id = 0)
+    public function fncNewEdit(User $user = null)
     {
-        if ($id) {
-            $this->mode = false; // editar registro
-        } else {
-            $this->mode = true; // crear registro
-            $rules = [
-                'name' => ['required', 'min:6'],
-                'email' => ['required', 'email', 'min:7', 'unique:users,email'],
-                'password' => [
-                    'required', 'string', 'min:6',
-                    'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'
-                ],
-                'password_confirm' => ['required', 'same:password'],
-            ];
-        }
+        $this->emit('showModal', $user);
+        // dump($user);
+        // $this->mode = $user->id; // 0/false=crear registro, 1/true=editar registro
+        // if ($this->mode) {
+        //     $this->reset(['id', 'name', 'email', 'profile_photo_path', 'password', 'password_confirm']);
+        //     $this->is_active = true;
 
-        $this->resetErrorBag();
-        $this->reset(['id', 'name', 'email', 'profile_photo_path', 'password', 'password_confirm']);
-        $this->title = 'Add register';
-        $this->is_active = true;
-        $this->ModalAddEdit = true;
+        //     $this->title = 'Add register';
+        // } else {
+        //     $this->reset(['password', 'password_confirm']);
+        //     $rules = [
+        //         'name' => ['required', 'min:6'],
+        //         'email' => ['required', 'email', 'min:7', 'unique:users,email'],
+        //         'password' => [
+        //             'required', 'string', 'min:6',
+        //             'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'
+        //         ],
+        //         'password_confirm' => ['required', 'same:password'],
+        //     ];
 
-        // dd('abrir modal');
+        //     $this->id = $user->id;
+        //     $this->name = $user->name;
+        //     $this->email = $user->email;
+        //     $this->profile_photo_path = $user->profile_photo_path;
+        //     $this->is_active = $user->is_active;
+
+        //     $this->title = 'Edit register';
+        // }
+
+        // $this->resetErrorBag();
+
+        // $this->ShowModal();
     }
     public function fncSave()
     {
         //
     }
+
+
 
     // getter & setter
     public function sortField(): Attribute
