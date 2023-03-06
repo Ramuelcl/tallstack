@@ -15,8 +15,8 @@
                     <div class="flex">
                         <x-forms.input-checkbox idName="is_active" label="Activo" placeholder="Ingrese estado">
                         </x-forms.input-checkbox>
-                        <x-forms.input idName="profile_photo_path" label="Foto" placeholder="Ingrese Foto">
-                        </x-forms.input>
+                        <x-forms.input-photo idName="profile_photo_path" label="Foto" placeholder="Ingrese Foto">
+                        </x-forms.input-photo>
                         @if ($this->profile_photo_path)
                             @if (substr($this->profile_photo_path, 0, 8) == 'https://')
                                 <img class="h-20 w-20 rounded-full" src="{{ $this->profile_photo_path }}"

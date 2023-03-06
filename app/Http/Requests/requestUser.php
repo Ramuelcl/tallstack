@@ -26,7 +26,7 @@ class requestUser extends FormRequest
         $rules1 = [
             'name' => 'required|min:6|max:30',
             'email' => ['required', 'email', 'min:10', 'max:40', Rule::unique('users', 'email')->ignore($user)],
-            'profile_photo_path' => 'max:2048',
+            'profile_photo_path' => 'image|max:2048',
             'is_active' => 'required',
         ];
         $rules2 = [];

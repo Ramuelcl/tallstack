@@ -3,12 +3,9 @@
 namespace App\View\Components\forms;
 
 use Illuminate\View\Component;
-// use Livewire\WithFileUploads;
 
 class input extends Component
 {
-    // use WithFileUploads;
-
     public $idName, $type, $label, $placeholder;
     /**
      * Create a new component instance.
