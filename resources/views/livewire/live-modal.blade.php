@@ -30,14 +30,15 @@
 
                     <x-forms.input-select idName="role" label="Roles" placeholder="Defina el rol" :opciones="$roles"
                         :seleccionadas="$misRoles" />
-
-                    <div class="flex">
-                        <x-forms.input-password idName="password" label="Contraseña" placeholder="Ingrese Contraseña">
-                        </x-forms.input-password>
-                        <x-forms.input-password idName="password_confirm" label="repite Contraseña"
-                            placeholder="Ingrese Contraseña"></x-forms.input-password>
-                    </div>
-
+                    @if (!$this->mode)
+                        <div class="flex">
+                            <x-forms.input-password idName="password" label="Contraseña"
+                                placeholder="Ingrese Contraseña">
+                            </x-forms.input-password>
+                            <x-forms.input-password idName="password_confirmation" label="repite Contraseña"
+                                placeholder="Ingrese Contraseña"></x-forms.input-password>
+                        </div>
+                    @endif
 
                 </div>
             </div>

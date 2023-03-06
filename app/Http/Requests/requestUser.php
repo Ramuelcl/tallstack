@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class requestUser extends FormRequest
 {
@@ -19,17 +20,25 @@ class requestUser extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
+    public function rules($user): array
     {
-        return [
+        $rules1 = [];
+        $rules1 = [
             'name' => 'required|min:6|max:30',
-            'email' => 'required|email|min:10|max:40',
-            'password' => 'required|min:6|max:30',
-            'password_confirm' => 'required|equal:password',
+            'email' => ['required', 'email', 'min:10', 'max:40', Rule::unique('users', 'email')->ignore($user)],
             'profile_photo_path' => 'max:2048',
             'is_active' => 'required',
         ];
+        $rules2 = [];
+        if (!$user) {
+            $rules2 = [
+                'password' => 'required|min:6|max:30|confirmed',
+                // 'password_confirm' => 'required|equal:password',
+            ];
+        }
+        return array_merge($rules1, $rules2);
     }
+
     public function messages(): array
     {
         return [
