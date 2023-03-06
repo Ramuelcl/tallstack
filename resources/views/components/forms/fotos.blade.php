@@ -9,6 +9,6 @@
             <input wire:model="{{$idName}}" type="file" name="{{$idName}}" id="{{$idName}}" accept="image/*" {{ $disabled ? 'disabled' : '' }} {{ $attributes->merge(['class' =>'focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-1 sm:text-sm border-gray-300 rounded-md',]) }}>
         </div>
         <div wire:loading wire:target="{{$idName}}" class="text-sm text-gray-500 italic">{{__('Uploading...')}}</div>
-        <x-input-error for="{{$idName}}"></x-input-error>
+        <x-input-errors idName="{{ $idName }}"></x-input-errors>
     </div>
 </div>

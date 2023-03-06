@@ -44,17 +44,6 @@ class LiveuserTable extends Component
     public $mode = null; // modo false=agregar registro, true=editar registro
     public $title; // titulo del modal
 
-
-    // campos de la tabla
-    public $user_id;
-    public $name;
-    public $email;
-    public $is_active;
-    public $profile_photo_path;
-    public $old_photo_path;
-    public $password;
-    public $password_confirm;
-
     public $display = [
         'title' => 'Usuarios',
         'caption' => 'Roles',
@@ -125,7 +114,9 @@ class LiveuserTable extends Component
     /** escuchas */
     protected $listeners = [
         'Search' => 'fncSearch',
-        // 'roleUpdating' => 'render',
+        'updateUser' => 'render',
+        // 'updateRol' => 'render',
+
     ];
 
     public function fncSearch($search)
@@ -234,53 +225,58 @@ class LiveuserTable extends Component
         $this->updatedQuery();
     }
 
-    protected function rules()
-    {
-        return [
-            'name' => 'required|min:6',
-            'email' => ['required', 'email', 'not_in:' . auth()->user()->email],
-        ];
-    }
+    // protected function rules()
+    // {
+    //     return [
+    //         'name' => 'required|min:6',
+    //         'email' => ['required', 'email', 'not_in:' . auth()->user()->email],
+    //     ];
+    // }
 
     public function fncNewEdit(User $user = null)
     {
-        $this->emit('showModal', $user);
-        // dump($user);
-        // $this->mode = $user->id; // 0/false=crear registro, 1/true=editar registro
-        // if ($this->mode) {
-        //     $this->reset(['id', 'name', 'email', 'profile_photo_path', 'password', 'password_confirm']);
-        //     $this->is_active = true;
+        $this->mode = $user->name ? 1 : 0; // 0/false=crear registro, 1/true=editar registro
+        if ($this->mode)
+            $this->emit('showModal', $user);
+        else
+            $this->emit('showModal');
+        //     // dump($user);
+        //     // $this->mode = $user->id; // 0/false=crear registro, 1/true=editar registro
+        //     // if ($this->mode) {
+        //     //     $this->reset(['id', 'name', 'email', 'profile_photo_path', 'password', 'password_confirm']);
+        //     //     $this->is_active = true;
 
-        //     $this->title = 'Add register';
-        // } else {
-        //     $this->reset(['password', 'password_confirm']);
-        //     $rules = [
-        //         'name' => ['required', 'min:6'],
-        //         'email' => ['required', 'email', 'min:7', 'unique:users,email'],
-        //         'password' => [
-        //             'required', 'string', 'min:6',
-        //             'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'
-        //         ],
-        //         'password_confirm' => ['required', 'same:password'],
-        //     ];
+        //     //     $this->title = 'Add register';
+        //     // } else {
+        //     //     $this->reset(['password', 'password_confirm']);
+        //     //     $rules = [
+        //     //         'name' => ['required', 'min:6'],
+        //     //         'email' => ['required', 'email', 'min:7', 'unique:users,email'],
+        //     //         'password' => [
+        //     //             'required', 'string', 'min:6',
+        //     //             'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'
+        //     //         ],
+        //     //         'password_confirm' => ['required', 'same:password'],
+        //     //     ];
 
-        //     $this->id = $user->id;
-        //     $this->name = $user->name;
-        //     $this->email = $user->email;
-        //     $this->profile_photo_path = $user->profile_photo_path;
-        //     $this->is_active = $user->is_active;
+        //     //     $this->id = $user->id;
+        //     //     $this->name = $user->name;
+        //     //     $this->email = $user->email;
+        //     //     $this->profile_photo_path = $user->profile_photo_path;
+        //     //     $this->is_active = $user->is_active;
 
-        //     $this->title = 'Edit register';
-        // }
+        //     //     $this->title = 'Edit register';
+        //     // }
 
-        // $this->resetErrorBag();
+        //     // $this->resetErrorBag();
 
-        // $this->ShowModal();
+        //     // $this->ShowModal();
     }
-    public function fncSave()
-    {
-        //
-    }
+
+    // public function fncSave()
+    // {
+    //     //
+    // }
 
 
 

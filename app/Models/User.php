@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 // Spatie
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -92,6 +93,11 @@ class User extends Authenticatable
             return $paso;
         }
     }
+    // devuelve array de los roles del usuario
+    // public function role()
+    // {
+    //     return $this->belongsTo(Role::class, 'roles_id');
+    // }
 
     // relacion 1:1
     public function perfil()
