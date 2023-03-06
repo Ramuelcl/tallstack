@@ -6,3 +6,5 @@
 @stack('modals')
 
 @livewireScripts
+
+@stack('sripts')

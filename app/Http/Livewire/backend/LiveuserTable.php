@@ -131,8 +131,8 @@ class LiveuserTable extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'sortField' => ['except' => 'id'],
-        'sortDir' => ['except' => 'Desc'],
+        // 'sortField' => ['except' => 'id'],
+        // 'sortDir' => ['except' => 'Desc'],
     ];
 
     public function __construct()

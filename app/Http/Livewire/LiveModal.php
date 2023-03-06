@@ -114,6 +114,14 @@ class LiveModal extends Component
         // dd($field);
     }
 
+    public function delete(User $user)
+    {
+        if ($user->name) {
+            $user->delete();
+            $this->emit('deleteUser', $user);
+        }
+    }
+
     public function loadImage(TemporaryUploadedFile $image)
     {
         $dir = "avatars";

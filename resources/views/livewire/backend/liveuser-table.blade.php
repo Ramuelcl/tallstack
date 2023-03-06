@@ -156,3 +156,9 @@
     </div>
     @endisset
 </div>
+@push('scripts')
+<script>
+    console.log('cargó el script');
+</script>
+
+@endpush
