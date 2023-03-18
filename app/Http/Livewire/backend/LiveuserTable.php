@@ -2,21 +2,23 @@
 
 namespace App\Http\Livewire\Backend;
 
-use Livewire\{Component, WithPagination};
-// use Livewire\WithPagination;
+use App\Http\Requests\requestUser;
+use Livewire\{Component, WithFileUploads, WithPagination};
 
-use App\Models\User;
+use App\Models\User as Item;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Permission\Models\Role;
 
 class LiveuserTable extends Component
 {
+    use WithFileUploads;
     use WithPagination;
     // protected $paginationTheme = 'bootstrap';
 
     public $Model = User::class;
     public $page = 1;
 
+    protected $user = null;
     protected $collection;
     public $collectionView = 5;
     public $collectionViews = array('5', '10', '25', '50');
@@ -26,8 +28,8 @@ class LiveuserTable extends Component
     public $search;
 
     // elemento activo
-    public $bActive = true;
-    public $activeAll;
+    public $bCheckitAll = true;
+    public $checkitAll;
 
     // elemento roles
     public $bRoles = true;
@@ -38,11 +40,26 @@ class LiveuserTable extends Component
     public $chkAll;
 
     // control de modales
-    public $ModalAddEdit = true;
-    public $ModalDelete = false;
+    // public $ModalAddEdit = true;
+    // public $showModal = 'hidden'; //'hidden'
+    // public $showModalDelete = 'hidden'; //'hidden'
+    public $confirmingItemDeletion = false;
+    public $confirmingItemAddEdit = false;
+
+    // campos de la tabla
+    public $name;
+    public $email;
+    public $password;
+    public $password_confirmation;
+    public $is_active;
+    public $profile_photo_path;
+    public $old_photo_path;
+
+    public $misRoles;
 
     public $mode = null; // modo false=agregar registro, true=editar registro
     public $title; // titulo del modal
+    public $icon = '';
 
     public $display = [
         'title' => 'Usuarios',
@@ -118,7 +135,9 @@ class LiveuserTable extends Component
         // 'updateRol' => 'render',
 
     ];
-
+    // protected $listeners = [
+    //     'showModal',
+    // ];
     public function fncSearch($search)
     {
         $this->search = $search;
@@ -137,7 +156,7 @@ class LiveuserTable extends Component
 
     public function __construct()
     {
-        // $this->Model =  User::class;
+        // $this->Model =  Item::class;
         // dd($this->Model);
     }
     public function mount()
@@ -170,7 +189,7 @@ class LiveuserTable extends Component
             ->when($this->sortField || $this->sortDir, function ($query) {
                 if ($this->sortField === 'field') { // campo a filtrar
                     // otro campo de otra tabla anexa
-                    // return $query->orderBy(User::with('roles')->get(), $this->sortDir);
+                    // return $query->orderBy(Item::with('roles')->get(), $this->sortDir);
                     // otra opcion
                     // return $query->orderBy(Apellido::select('lastname')
                     // ->whereColumn('apellidos.user.id', 'users.id'), $this->sortDir);
@@ -186,7 +205,7 @@ class LiveuserTable extends Component
                 return $query->role($this->roles);
             })
 
-            ->when($this->activeAll, function ($query) {
+            ->when($this->checkitAll, function ($query) {
                 return $query->active($query);
             });
 
@@ -205,7 +224,7 @@ class LiveuserTable extends Component
         // $this->page = 1;
         $this->resetErrorBag();
         $this->resetPage();
-        // $this->reset(['collection', 'search', 'activeAll', 'roles', 'sortField', 'sortDir']);
+        // $this->reset(['collection', 'search', 'checkitAll', 'roles', 'sortField', 'sortDir']);
         $this->reset();
         $this->emit('fncSearchClear');
     }
@@ -224,61 +243,88 @@ class LiveuserTable extends Component
 
         $this->updatedQuery();
     }
-
-    // protected function rules()
-    // {
-    //     return [
-    //         'name' => 'required|min:6',
-    //         'email' => ['required', 'email', 'not_in:' . auth()->user()->email],
-    //     ];
-    // }
-
-    public function fncNewEdit(User $user = null)
+    public function qq()
     {
-        $this->mode = $user->name ? 1 : 0; // 0/false=crear registro, 1/true=editar registro
-        if ($this->mode)
-            $this->emit('showModal', $user);
-        else
-            $this->emit('showModal');
-        //     // dump($user);
-        //     // $this->mode = $user->id; // 0/false=crear registro, 1/true=editar registro
-        //     // if ($this->mode) {
-        //     //     $this->reset(['id', 'name', 'email', 'profile_photo_path', 'password', 'password_confirm']);
-        //     //     $this->is_active = true;
+        if (is_null($user->name)) {
+            $this->mode = 0;
+            $this->title = 'New register';
+        } else {
+            $this->user = $user;
+            $this->mode = 1;
+            $this->title = 'Edit register';
+            $this->misRoles = $user->roles()->pluck('name')->toArray();
+            // dd($this->misRoles);
 
-        //     //     $this->title = 'Add register';
-        //     // } else {
-        //     //     $this->reset(['password', 'password_confirm']);
-        //     //     $rules = [
-        //     //         'name' => ['required', 'min:6'],
-        //     //         'email' => ['required', 'email', 'min:7', 'unique:users,email'],
-        //     //         'password' => [
-        //     //             'required', 'string', 'min:6',
-        //     //             'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'
-        //     //         ],
-        //     //         'password_confirm' => ['required', 'same:password'],
-        //     //     ];
-
-        //     //     $this->id = $user->id;
-        //     //     $this->name = $user->name;
-        //     //     $this->email = $user->email;
-        //     //     $this->profile_photo_path = $user->profile_photo_path;
-        //     //     $this->is_active = $user->is_active;
-
-        //     //     $this->title = 'Edit register';
-        //     // }
-
-        //     // $this->resetErrorBag();
-
-        //     // $this->ShowModal();
+            // $this->id = $user->id;
+            $this->name = $user->name;
+            $this->email = $user->email;
+            $this->profile_photo_path = $user->profile_photo_path;
+            $this->is_active = $user->is_active;
+            // tratamiento del avatar
+            $this->old_photo_path = $user->profile_photo_path;
+        }
     }
 
-    // public function fncSave()
-    // {
-    //     //
-    // }
+    public function Save()
+    {
+        $requestUser = new requestUser();
 
+        $values = $this->validate($requestUser->rules($this->user), $requestUser->messages());
 
+        // tratamiento del avatar
+        $path = $this->loadImage($values['profile_photo_path']);
+        if ($this->old_photo_path !== $path)
+            $values = array_merge($values, ['profile_photo_path' => $path]);
+        // tratamiento del avatar
+
+        if (isset($this->user->id)) {
+            $this->user->save();
+            session()->flash('message', 'user Saved Successfully');
+        } else {
+            auth()->user()->users()->create([
+                'name' => $this->user['name'],
+                'price' => $this->user['price'],
+                'status' => $this->user['status'] ?? 0
+            ]);
+            session()->flash('message', 'user Added Successfully');
+        }
+
+        $this->confirmingItemAddEdit = false;
+    }
+    public function confirmItemAddEdit(Item $user = null)
+    {
+        $this->mode = $user->name == null;
+
+        if (!$this->mode) {
+            $this->icon = 'fa-solid fa-plus';
+            $this->title = 'agregando registro';
+            $this->reset(['user']);
+            $this->confirmingItemAddEdit = true;
+        } else {
+            $this->icon = 'fa-solid fa-edit';
+            $this->title = 'editando registro';
+            $this->resetErrorBag();
+            $this->user = $user;
+            $this->confirmingItemAddEdit = true;
+        }
+    }
+
+    public function fncDeleteConfirm(Item $id)
+    {
+        // dd($id);
+        $this->user = $id;
+        $this->title = 'Eliminando registro';
+        $this->confirmingItemDeletion = true;
+    }
+
+    public function fncDeleteItem(Item $item)
+    {
+        if ($this->item->name) {
+            $item->delete();
+            session()->flash('message', 'Item Deleted Successfully');
+        }
+        $this->confirmingItemDeletion = false;
+    }
 
     // getter & setter
     public function sortField(): Attribute
@@ -305,11 +351,11 @@ class LiveuserTable extends Component
         );
     }
 
-    public function bActive(): Attribute
+    public function bCheckitAll(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->bActive,
-            set: fn ($value) => $this->bActive = $value,
+            get: fn () => $this->bCheckitAll,
+            set: fn ($value) => $this->bCheckitAll = $value,
         );
     }
 

@@ -1,14 +1,13 @@
 <x-layout>
-    <div class="bg-gray-200 dark:bg-gray-800">
+
+    <div>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 overflow-hidden shadow-xl sm:rounded-lg">
-                    @livewire('backend.liveuser-table')
+                <div class="overflow-hidden shadow-xl sm:rounded-lg">
+                    @livewire('backend.liveuserindex')
                 </div>
             </div>
         </div>
-    </div>
-    @push('modals')
-    @livewire('live-modal')
-    @endpush
 </x-layout>
+<!-- @livewire('live-items') -->
+<!-- @livewire('tall-crud-generator') -->

@@ -32,7 +32,6 @@
             @include('layouts.partials.footer')
         </main>
 
-
         @include('layouts.partials.scripts')
     </div>
 </body>

@@ -31,7 +31,7 @@ class LiveSearch extends Component
 
     public function fncSearchClear()
     {
-        // $this->reset(['search']);
-        $this->reset();
+        $this->reset(['search']);
+        // $this->reset();
     }
 }
