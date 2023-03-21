@@ -26,6 +26,11 @@ class PagesController extends Controller
         return view('layouts.master');
     }
 
+    public function pruebas()
+    {
+        return view('pages.pruebas');
+    }
+
     public function welcome()
     {
         return view('pages.welcome');

@@ -112,7 +112,9 @@
             <x-slot name='footer'>
                 <a href="#"
                     class="bg-gray-400 hover:bg-gray-500 rounded-md transition-all duration-200 mr-2">{{ __('Cancel') }}</a>
-                <x-button class="bg-blue-400 hover:bg-blue-500 rounded-md transition-all duration-200">Save</x-button>
+                <x-button class="bg-blue-400 hover:bg-blue-500 rounded-md transition-all duration-200"
+                    @click="document.querySelector('#delete-user-form').submit()">{{ __('Continue') }}
+                </x-button>
             </x-slot>
         </x-modal-confirmacion>
         <x-modal-confirmacion name="user-delete-modal">

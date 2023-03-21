@@ -9,16 +9,18 @@
                 <li><a href="#user-delete-modal">Llama al modal</a> </li>
                 <li><a href="#confirmation">Modal de confirmación</a> </li>
                 <li>Link 2</li>
-                <li>Link 3</li>
             </ul>
         </aside>
-        <main class=" taxt-sm col-span-9">
-            <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum provident quam totam hic excepturi! Officiis nam, voluptas fugiat reprehenderit praesentium optio sed delectus animi ea! Beatae magni ab debitis deleniti!
-            </p>
-            <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum provident quam totam hic excepturi! Officiis nam, voluptas fugiat reprehenderit praesentium optio sed delectus animi ea! Beatae magni ab debitis deleniti!
-            </p>
-            <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum provident quam totam hic excepturi! Officiis nam, voluptas fugiat reprehenderit praesentium optio sed delectus animi ea! Beatae magni ab debitis deleniti!
-            </p>
+        <main class="text-sm col-span-9">
+            <p class="mb-6">Would you like to delete account?</p>
+            <form id="delete-user-form" method="POST" action="/" x-data @submit.prevent="
+            if(! confirmed) location.hash = '#user-delete-modal';
+            ">
+                @csrf
+                <p>
+                    <x-button class="bg-blue-400 hover:bg-blue-500">yes, delete</x-button>
+                </p>
+            </form>
         </main>
 
     </div>

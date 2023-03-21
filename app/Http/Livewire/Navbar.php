@@ -14,6 +14,7 @@ class Navbar extends Component
         'Permissions' => 'users.permissionsIndex',
         'About' => 'pages.about',
         'Master' => 'pages.master',
+        'pRuEbAs' => 'pages.pruebas',
     ];
 
     public function render()

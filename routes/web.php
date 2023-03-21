@@ -23,6 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/contact ', 'PagesController@contact')->name('pages.contact');
     Route::get('/welcome', 'PagesController@welcome')->name('pages.welcome');
     Route::get('/master', 'PagesController@master')->name('pages.master');
+    Route::get('/pruebas', 'PagesController@pruebas')->name('pages.pruebas');
 
     Route::get('/linkstorage', function () {
         $targetFolder = base_path() . '/storage/app/public';
