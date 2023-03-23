@@ -1,14 +1,21 @@
 <?php
+// resources/views/livewire/backend/liveuserindex.blade.php
+// app/Http/Livewire/backend/Liveuserindex.php
 
 namespace App\Http\Livewire\Backend;
 
-use Livewire\Component;
+use Livewire\{Component, WithPagination};
 
 use App\Models\User as Item;
 use Spatie\Permission\Models\Role;
+
 class Liveuserindex extends Component
 {
+    use WithPagination;
     public $title = 'Usuarios';
+
+    public $collectionView = 5;
+    public $collectionViews = array('5', '10', '25', '50');
 
     public $display = [
         'title' => 'Usuarios',
@@ -73,14 +80,19 @@ class Liveuserindex extends Component
     // campos por los cuales ordenar
     public $fieldsOrden = ['id', 'name', 'email'];
     public $nameOrden = ['id', 'Nombre', 'e-Mail'];
-
+    public $nameSearch = 'id, Nombre, e-Mail';
     public function render()
     {
         return view('livewire.backend.liveuserindex', [
-            'results' => Item::paginate(5),
+            'results' => Item::paginate($this->collectionView),
             'roles' => Role::all()
                 ->pluck('name')
                 ->toArray(),
         ]);
+    }
+
+    public function fncTotal()
+    {
+        return Item::count();
     }
 }

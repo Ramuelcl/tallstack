@@ -1,4 +1,4 @@
-<div class="shadow-md max-w-xl inset-auto rounded-md border-4 border-slate-400 bg-gray-300 dark:bg-gray-600">
+<div class="hidden shadow-md max-w-xl inset-auto rounded-md border-4 border-slate-400 bg-gray-300 dark:bg-gray-600">
     <header class="bg-blue-300 dark:bg-blue-600 p-4 rounded-t-4">
         <h1 class="font-bold text-gray-100 dark:text-gray-900">Add Record</h1>
     </header>

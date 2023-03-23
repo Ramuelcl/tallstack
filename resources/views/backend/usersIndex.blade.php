@@ -1,5 +1,4 @@
 <x-layout>
-
     <div>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -9,5 +8,3 @@
             </div>
         </div>
 </x-layout>
-<!-- @livewire('live-items') -->
-<!-- @livewire('tall-crud-generator') -->

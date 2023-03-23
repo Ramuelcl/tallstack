@@ -1,9 +1,25 @@
 <div>
+    {{-- resources/views/livewire/backend/liveuserindex.blade.php
+         app/Http/Livewire/backend/Liveuserindex.php --}}
+
     <div class="flex justify-between">
         <div class="text-2xl">{{ $title }}</div>
         <button type="submit" wire:click="$emitTo('liveusermodal', 'showForm', null);" class="font-semibold">
-            <i class="fa-solid fa-plus"></i>
+            <i class="pr-6 fa-solid fa-plus"></i>
         </button>
+    </div>
+    <div class="flex justify-between">
+        <div class="flex items-center justify-between px-4 py-1 text-xs text-gray-800 dark:text-gray-500 sm:px-2">
+            <div>
+                <select wire:model="collectionView" class="rounded-md text-xs">
+                    @foreach ($collectionViews as $collectionView)
+                        <option value="{{ $collectionView }}">{{ $collectionView }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        {{-- <x-forms.input-select idName="collectionView" :opciones="$collectionViews" :seleccionada="$collectionView" /> --}}
+        @livewire('live-search', ['fields' => $nameSearch]) {{-- <livewire:live-search :fields="$nameSearch" /> --}}
     </div>
     <x-forms.table>
         <x-slot name="titles">
@@ -44,7 +60,7 @@
                 </th>
             </tr>
         </x-slot>
-        @forelse ($results as $key => $result)
+        @foreach ($results as $result)
             <tr class="hover:bg-blue-300 {{ $loop->index % 2 ? 'bg-gray-100' : 'bg-gray-200' }}">
                 @foreach ($fields as $field)
                     @if ($field['table']['display'])
@@ -54,7 +70,7 @@
                                     <!-- // relleno de ceros -->
                                     {{ sprintf('%04d', $result->id) }}
                                     <!-- // formato con decimales -->
-                                    {{-- -{{ number_format($key + 1, 0, ',', '.') }} --}}
+                                    <!--  number_format($key + 1, 0, ',', '.') -->
                                 @break
 
                                 @case('profile_photo_path')
@@ -87,51 +103,33 @@
 
                                 @default
                                     Default case...
+                                @break
                             @endswitch
                         </td>
                     @endif
                 @endforeach
             </tr>
-            @empty
-                <p>{{ __('No record') }}</p>
-            @endforelse
-            <x-slot name="foot">
-                pie
-            </x-slot>
-        </x-forms.table>
-        @livewire('backend.liveusermodal')
-        <x-modal-confirmacion name="confirmation">
-            <x-slot name='title'>
-                Confirmación
-            </x-slot>
+        @endforeach
+        @empty($results)
+            {{ __('No records') }}
+        @endempty
+        <x-slot name="foot">
 
-            <x-slot name='body'>
-                Bar
-            </x-slot>
-
-            <x-slot name='footer'>
-                <a href="#"
-                    class="bg-gray-400 hover:bg-gray-500 rounded-md transition-all duration-200 mr-2">{{ __('Cancel') }}</a>
-                <x-button class="bg-blue-400 hover:bg-blue-500 rounded-md transition-all duration-200"
-                    @click="document.querySelector('#delete-user-form').submit()">{{ __('Continue') }}
-                </x-button>
-            </x-slot>
-        </x-modal-confirmacion>
-        <x-modal-confirmacion name="user-delete-modal">
-            <x-slot name='title'>
-                foo
-            </x-slot>
-
-            <x-slot name='body'>
-                Bar
-                {{-- {{ $slot ?? null }} --}}
-            </x-slot>
-
-            <x-slot name='footer'>
-                <a href="#"
-                    class="bg-gray-400 hover:bg-gray-500 rounded-md transition-all duration-200 mr-2">{{ __('Cancel') }}</a>
-                <x-button class="bg-blue-400 hover:bg-blue-500 rounded-md transition-all duration-200">Save</x-button>
-            </x-slot>
-        </x-modal-confirmacion>
-
-    </div>
+        </x-slot>
+    </x-forms.table>
+    @isset($results)
+        <div class="flex justify-between items-center px-4 py-1 text-xs text-gray-800 dark:text-gray-500 sm:px-2">
+            <div>
+                <select wire:model="collectionView" class="rounded-md text-xs">
+                    @foreach ($collectionViews as $collectionView)
+                        <option value="{{ $collectionView }}">{{ $collectionView }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="justify-self-auto">
+                {{ $results->links() }}
+            </div>
+        </div>
+    @endisset
+    @livewire('backend.liveusermodal')
+</div>

@@ -1,9 +1,9 @@
-<div id="modal-component-container" class="fixed inset-0">
+<div id="modal-component-container" class="{{ $show }} fixed inset-0">
     <div id="modal-flex-container" class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div id="modal-bg-container" class="fixed inset-0 bg-gray-700 bg-opacity-75">
 
         </div>
-        <div id="modal-space-container" class=""></div>
+        <div id="modal-space-container" class="hidden sm:inline-block sm:align-middle sm:h-screen"></div>
 
         <div id="modal-container" class="inline-block align-bottom bg-gray-50 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
             <div id="modal-wrapper" class="bg-gray-50 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -21,7 +21,7 @@
             </div>
 
             <div id="modal-actions" class="bg-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <x-botonSecondary>Cancelar</x->
+                <x-botonSecondary id="close-modal">Cancelar</x->
                     <x-botonSuccess>Ok</x-botonSuccess>
                     <!-- <x-botonPrimary>Primary</x-botonPrimary>
                     <x-botonInfo>Info</x-botonInfo>
@@ -34,3 +34,32 @@
         </div>
     </div>
 </div>
+<script>
+    const closeButton = document.querySelector("#close-modal");
+    const showButton = document.querySelector("#open-modal");
+    const modalContainer = document.querySelector("#modal-componer-container");
+    const modal = document.querySelector("#modal-container");
+
+    openButton.addEventListener("click", () => {
+        openModal();
+    });
+
+    closeButton.addEventListener("click", () => {
+        closeModal();
+    });
+
+    function openModal() {
+        showAndHide(modalContainer, ["block", "bg-fadeIn"], ["hidden", "bg-fadeOut"]);
+        showAndHide(modal, ["modal-scaleIn"], ["modal-scaleOut"]);
+    }
+
+    function closeModal() {
+        showAndHide(modalContainer, ["bg-fadeOut"], ["bg-fadeIn"]);
+        showAndHide(modal, ["modal-scaleOut"], ["modal-scaleIn"]);
+    }
+
+    function showAndHide(element, classesToAdd, classesToRemove) {
+        element.classList.remove(...classesToRemove);
+        element.classList.remove(...classesToAdd);
+    }
+</script>

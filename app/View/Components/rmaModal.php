@@ -8,12 +8,23 @@ use Illuminate\View\Component;
 
 class rmaModal extends Component
 {
+    public $show = "hidden";
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
         //
+    }
+
+    public function fncShow()
+    {
+        $this->show = "";
+    }
+
+    public function fncHidden()
+    {
+        $this->show = "hidden";
     }
 
     /**

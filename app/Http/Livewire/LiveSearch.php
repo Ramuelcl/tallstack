@@ -15,14 +15,21 @@ class LiveSearch extends Component
         // 'roleUpdating' => 'render',
     ];
 
-    public function mount($fields = ['id'])
+    public function __construct($fields = '')
     {
         // dd($fields);
-        if (is_null($fields) or sizeof($fields) < 1)
-            $this->fields = '';
-        else
-            $this->fields = implode(', ', $fields);
+        $this->fields =  $fields;
     }
+
+    // public function mount($fields = ['id'])
+    // {
+    //     // dd($fields);
+    //     if (is_null($fields) or sizeof($fields) < 1)
+    //         $this->fields = '';
+    //     else
+    //         $this->fields = implode(', ', $fields);
+    // }
+
     public function render()
     {
         $this->emit('Search', $this->search);

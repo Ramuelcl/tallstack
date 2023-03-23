@@ -8,18 +8,17 @@ use Illuminate\View\Component;
 
 class inputSelect extends Component
 {
-    public $idName, $label, $opciones, $selecionadas;
+    public $idName, $opciones, $seleccionada;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $idName,  string $label = '', array $opciones = [], array $selecionadas = [])
+    public function __construct(string $idName,  array $opciones = [], $seleccionada = 0)
     {
         $this->idName = $idName;
-        $this->label = $label;
         $this->opciones = array_merge(["Select..."], $opciones);
-        $this->selecionadas =  $selecionadas;
+        $this->seleccionada =  $seleccionada;
         // dd($this->opciones);
     }
 
@@ -35,8 +34,8 @@ class inputSelect extends Component
         return view('components.forms.input-select');
     }
 
-    public function isSelected($option)
-    {
-        return in_array($option, $this->selecionadas) ? 'selected' : '';
-    }
+    // public function isSelected($seleccionada)
+    // {
+    //     return in_array($seleccionada, $this->opciones) ? 'selected' : '';
+    // }
 }
