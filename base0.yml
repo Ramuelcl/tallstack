@@ -77,7 +77,7 @@ models:
     activo: boolean nullable default:true
     valor1: decimal:8,2 nullable default:null
     valor2: string:128 nullable default:null
-    valor3: boolean nullable default:false
+    valor3: boolean nullable default:null
     indexes:
       - primary: tabla, tabla_id
       - index: nombre
@@ -106,26 +106,26 @@ models:
     #   hasMany: Direccion:xDirecciones, Telefono:xTelefonos
     #   morphedByMany: Vendedor:xEntidades
 
-  banca\Traspaso:
-    dateImportation: date nullable default_format:"Y-m-d"
-    libelle: text
-    montant: decimal:8,2 nullable default:0
-    archivo: string:100 nullable default:null
-    dupTxt: text charset:'utf8'
-    archivado: unsignedBigInteger nullable default:0
-    timestamps: false
+  # banca\Traspaso:
+  #   dateImportation: date nullable default_format:"Y-m-d"
+  #   libelle: text
+  #   montant: decimal:8,2 nullable default:0
+  #   archivo: string:100 nullable default:null
+  #   dupTxt: text charset:'utf8'
+  #   archivado: unsignedBigInteger nullable default:0
+  #   timestamps: false
 
-  banca\Movimiento:
-    cuenta: string:12 nullable default:5578733W020
-    tipo: string:3 nullable default:CCP
-    dateMouvement: date nullable default_format:"Y-m-d"
-    libelle: text
-    montant: decimal:8,2
-    cliente_id: bigInteger nullable default:null
-    releve: bigInteger nullable default:null
-    dateReleve: date nullable default_format:"Y-m-d"
-    indexes:
-      - index: cuenta, dateMouvement
-    softDeletes: true
+  # banca\Movimiento:
+  #   cuenta: string:12 nullable default:5578733W020
+  #   tipo: string:3 nullable default:CCP
+  #   dateMouvement: date nullable default_format:"Y-m-d"
+  #   libelle: text
+  #   montant: decimal:8,2
+  #   cliente_id: bigInteger nullable default:null
+  #   releve: bigInteger nullable default:null
+  #   dateReleve: date nullable default_format:"Y-m-d"
+  #   indexes:
+  #     - index: cuenta, dateMouvement
+  #   softDeletes: true
 
 # seeder: Pais, Ciudad, Direccion, Entidad, Tabla

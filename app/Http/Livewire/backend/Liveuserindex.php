@@ -12,6 +12,8 @@ use Spatie\Permission\Models\Role;
 class Liveuserindex extends Component
 {
     use WithPagination;
+
+    private $items;
     public $title = 'Usuarios';
 
     public $collectionView = 5;
@@ -76,19 +78,119 @@ class Liveuserindex extends Component
     public $checkitAll;
     // orden y filtro
     public $sortField = 'id',
-        $sortDir = 'Desc';
+        $sortDir = 'desc', $uppercase = '';
     // campos por los cuales ordenar
-    public $fieldsOrden = ['id', 'name', 'email'];
-    public $nameOrden = ['id', 'Nombre', 'e-Mail'];
+    public $fieldsOrden = ['id', 'name', 'email', 'role'];
+    public $nameOrden = ['id', 'Nombre', 'e-Mail', 'Role'];
+    // buscar en los campos
     public $nameSearch = 'id, Nombre, e-Mail';
+    public $search = '';
+    protected $listeners = [
+        'search' => 'fncSearch'
+    ];
+
     public function render()
     {
+        $this->updatedQuery();
         return view('livewire.backend.liveuserindex', [
-            'results' => Item::paginate($this->collectionView),
+            'results' => $this->items,
             'roles' => Role::all()
                 ->pluck('name')
                 ->toArray(),
         ]);
+    }
+
+    public function updatedQuery()
+    {
+        $this->items = Item::where('id', '>', 0)
+
+            // filtrando por contenido en los campos
+            ->when($this->search, function ($query) {
+                $srch = "%{$this->search}%";
+                return $query->where('id', 'like', $srch)
+                    ->orWhere('name', 'like', $srch)
+                    ->orWhere('email', 'like', $srch);
+            })
+
+            // ordenando los campos cuando no son nulos &&
+            ->when($this->sortField && $this->sortDir, function ($query) {
+                if ($this->sortField === 'role') {
+                    return $query->orderBy(Role($query, $this->role), $this->sortDir);
+                    // return $query->orderBy(Role::select('name')->whereColumn('roles.user_id', 'users.id'), $this->sortDir);
+                } else {
+                    return $query->orderBy($this->sortField, $this->sortDir);
+                }
+            })
+
+            //muestra solo los activos
+            ->when($this->checkitAll, function ($query) {
+                return $query->active($query);
+            });
+
+        // paginando
+        $this->items = $this->items->paginate($this->collectionView);
+        $this->fncTotal();
+        // $this->permisos = Permission::all();
+        return;
+    }
+
+    public function fncOrden($sortField = 'id')
+    {
+        // dd($sortField);
+        // existe en la lista de campos a ordenar
+        if (!in_array($sortField, $this->fieldsOrden))
+            return;
+
+        // campo a ordenar
+        $this->sortField = $sortField;
+        // dd($sortField);
+
+        // orden asc, desc, null
+        switch ($this->sortDir) {
+            case 'asc':
+                $this->sortDir = 'desc';
+                break;
+            case 'desc':
+                $this->sortDir = 'asc';
+                break;
+        }
+
+        $this->updatedQuery();
+    }
+
+    public function sortable($sortField = 'id')
+    {
+        // existe en la lista de campos a ordenar
+        if (!in_array($sortField, $this->fieldsOrden))
+            return;
+
+        // dd([$this->sortField, $this->sortDir]);
+        // campo a ordenar
+        $this->sortField = $sortField;
+        // dd($sortField);
+
+        // orden asc, desc
+        switch ($this->sortDir) {
+            case 'asc':
+                $this->sortDir = 'desc';
+                break;
+            case 'desc':
+                $this->sortDir = 'asc';
+                break;
+        }
+    }
+
+    public function fncCursor($field = 'id')
+    {
+
+        // valida el campo a ordenar; si existe le pone cursor-pointer
+        return in_array($field, $this->fieldsOrden) ? 'cursor-pointer' : '';
+    }
+
+    public function fncSearch($search)
+    {
+        // dd($search);
+        $this->search = $search;
     }
 
     public function fncTotal()

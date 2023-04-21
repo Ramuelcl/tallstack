@@ -1,0 +1,67 @@
+.btn{
+    @apply inline-flex items-center px-2 py-1 w-20 h-8 capitalize
+    font-semibold text-center text-gray-200
+    border border-r-4 border-b-4
+    rounded-md transition cursor-pointer
+    disabled:opacity-25
+    hover:border-r-2 hover:border-b-2 hover:text-gray-50 hover:shadow-inner
+    focus:border-r-2 focus:border-b-2 focus:shadow-inner
+    active:text-gray-50;
+}
+/* danger, delete */
+.btn-red{
+    @apply bg-red-600 border-red-700 hover:border-red-400;
+}
+/* success, nuevo */
+.btn-blue{
+    @apply bg-blue-600 border-blue-700 hover:border-blue-400;
+}
+.btn-green{
+    @apply bg-green-600 border-green-700 hover:border-green-400;
+}
+.btn-gray{
+    @apply bg-gray-600 border-gray-700 hover:border-gray-400;
+}
+.btn-yellow{
+    @apply bg-yellow-600 border-yellow-700 hover:border-yellow-400;
+}
+.btn-zinc{
+    @apply bg-zinc-600 border-zinc-700 hover:border-zinc-400;
+}
+.btn-sky{
+    @apply bg-sky-600 border-sky-700 hover:border-sky-400;
+}
+.btn-slate{
+    @apply bg-slate-600 border-slate-700 hover:border-slate-400;
+}
+.btn-orange{
+    @apply bg-orange-600 border-orange-700 hover:border-orange-400;
+}
+.btn-amber{
+    @apply bg-amber-600 border-amber-700 hover:border-amber-400;
+}
+.btn-lime{
+    @apply bg-lime-600 border-lime-700 hover:border-lime-400;
+}
+.btn-teal{
+    @apply bg-teal-600 border-teal-700 hover:border-teal-400;
+}
+.btn-purple{
+    @apply bg-purple-600 border-purple-700 hover:border-purple-400;
+}
+.btn-fuchsia{
+    @apply bg-fuchsia-600 border-fuchsia-700 hover:border-fuchsia-400;
+}
+.btn-pink{
+    @apply bg-pink-600 border-pink-700 hover:border-pink-400;
+}
+.btn-rose{
+    @apply bg-rose-600 border-rose-700 hover:border-rose-400;
+}
+.btn-fuchsia{
+    @apply bg-fuchsia-600 border-fuchsia-700 hover:border-fuchsia-400;
+}
+.btn-fuchsia{
+    @apply bg-fuchsia-600 border-fuchsia-700 hover:border-fuchsia-400;
+}
+

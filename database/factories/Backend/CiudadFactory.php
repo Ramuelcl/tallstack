@@ -23,7 +23,7 @@ class CiudadFactory extends Factory
     {
         return [
             // 'nombre' => $ciudad,
-            'pais_id' => 63,
+            'pais_id' => 194,
         ];
     }
 }

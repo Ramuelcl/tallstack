@@ -17,13 +17,15 @@ class VendedorFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'nombre' => $this->faker->word,
+            'razonSocial' => $this->faker->regexify('[A-Za-z0-9]{128}'),
+            'nombres' => $this->faker->regexify('[A-Za-z0-9]{80}'),
+            'apellidos' => $this->faker->regexify('[A-Za-z0-9]{80}'),
+            'activo' => $this->faker->boolean,
+            'eMail' => $this->faker->word,
         ];
     }
 }

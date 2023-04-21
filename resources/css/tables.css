@@ -1,0 +1,16 @@
+.table {
+    @apply table-fixed w-full border rounded border-separate lg:border-collapse;
+ }
+
+
+.table th, .table td{
+    @apply border-gray-400 px-2 py-1;
+ }
+
+.table th {
+    @apply text-gray-800;
+ }
+
+.table tbody tr:nth-child(2n+1){
+    @apply bg-gray-50;
+ }

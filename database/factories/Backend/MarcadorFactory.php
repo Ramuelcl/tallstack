@@ -31,6 +31,11 @@ class MarcadorFactory extends Factory
 
     public function fncCrearColores()
     {
+        Storage::deleteDirectory('images/avatars');
+        Storage::makeDirectory('images/avatars');
+        $filePath = 'public/storage/images/avatars';
+        // dump($filePath);
+
         $colores = $this->colores();
         foreach ($colores as $key => $v) {
             // $v = $colores[$this->i];
@@ -40,13 +45,23 @@ class MarcadorFactory extends Factory
             $hexa = '#' . $v['hexa'];
             $rgb = $v['rgb'];
             $metadata = json_encode([$nombre, $hexa, $rgb]);
-            $activo = (int)$this->faker->boolean($chanceOfGettingTrue = 70);
-            // dd($activo, $metadata);
+            $activo = $this->faker->boolean($chanceOfGettingTrue = 70);
+            $imagen = 'colores/' . $this->faker->image($dir = $filePath, $width = 640, $height = 480, $category = null, $word = false);
+            // $imagen = $this->faker->imageUrl(640, 480, null, false);
 
+            // dump(['i' => $this->i, 'colores son:' => count($colores), $imagen, $imagen1]);
+            // dd(['this' => $this, 'imagen' => $imagen]);
+
+            // Storage::put('images', $imagen);
+
+            //            $sql = "INSERT INTO marcadores (`nombre`,`babosa`,`hexa`,`rgb`,`metadata`,`imagen`) VALUES (
+            //                '$nombre', '$babosa', '$hexa', '$rgb', '$metadata', '$imagen'
+            //            );";
             $sql = "INSERT INTO marcadors (`nombre`,`babosa`,`hexa`,`rgb`,`metadata`, `activo`) VALUES (
                 '$nombre', '$babosa', '$hexa', '$rgb', '$metadata', '$activo');";
 
             DB::statement($sql);
+            // $this->i++;
         }
         return;
     }

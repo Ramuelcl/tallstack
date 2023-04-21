@@ -1,7 +1,9 @@
 <div>
     {{-- resources/views/livewire/backend/liveuserindex.blade.php
-         app/Http/Livewire/backend/Liveuserindex.php --}}
-
+        app/Http/Livewire/backend/Liveuserindex.php --}}
+    {{-- // --}}
+    {{ $sortField }} - {{ $sortDir }}
+    {{-- // --}}
     <div class="flex justify-between">
         <div class="text-2xl">{{ $title }}</div>
         <button type="submit" wire:click="$emitTo('liveusermodal', 'showForm', null);" class="font-semibold">
@@ -28,21 +30,56 @@
                     @if ($field['table']['display'])
                         @php
                             // valida el campo a ordenar; si existe le pone cursor-pointer
-                            $orden = in_array($field['name'], $fieldsOrden) ? $field['name'] : null;
+                            $orden = in_array($field['name'], $fieldsOrden) ? 'cursor-pointer' : '';
+                            $uppercase = $field['name'] == $sortField ? 'uppercase' : 'capitalize';
                         @endphp
-                        @if ($field['name'] == 'is_active')
-                            <th scope="col"
-                                class="bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
-                                @if (!$checkitAll)
-                                    {{ __($field['table']['titre']) }}
-                                @endif
+
+                        @if ($field['name'] == 'id')
+                            <th wire:click="sortable('id')" scope="col"
+                                class="{{ $orden }} {{ $uppercase }} justify-between px-6 py-3 bg-gray-50 text-gray-500 tracking-wide text-center text-xs font-medium">
+                                Id
+                                <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir" :sortField="$sortField" />
+
+                            </th>
+                        @elseif ($field['name'] == 'name')
+                            <th wire:click="sortable('name')" scope="col"
+                                class="{{ $orden }} {{ $uppercase }} justify-between px-6 py-3 bg-gray-50 text-gray-500 tracking-wide text-center text-xs font-medium">
+                                nombre
+                                <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir" :sortField="$sortField" />
+
+                            </th>
+                        @elseif ($field['name'] == 'email')
+                            <th wire:click="sortable('email')" scope="col"
+                                class="{{ $orden }} {{ $uppercase }} justify-between px-6 py-3 bg-gray-50 text-gray-500 tracking-wide text-center text-xs font-medium">
+                                email
+                                <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir" :sortField="$sortField" />
+
+                            </th>
+                        @elseif ($field['name'] == 'is_active')
+                            <div>
+                                <th scope="col"
+                                    class="bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                    @if (!$checkitAll)
+                                        {{ __($field['table']['titre']) }}
+                                    @endif
+                                </th>
+                            </div>
+                        @elseif ($field['name'] == 'role')
+                            <th wire:click="sortable('role')" scope="col"
+                                class="{{ $orden }} {{ $uppercase }} justify-between px-6 py-3 bg-gray-50 text-gray-500 tracking-wide text-center text-xs font-medium">
+                                Role
+                                <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir" :sortField="$sortField" />
+
                             </th>
                         @else
-                            <th wire:click="fncOrden('{{ $orden }}')" scope="col"
-                                class="{{ $orden ? 'cursor-pointer' : '' }} bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
-                                {{ __($field['table']['titre']) }}
-                                <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir" :sortField="$sortField" />
-                            </th>
+                            <div>
+                                <th wire:click="sortable($this->field['name'])" scope="col"
+                                    class="{{ $orden }} bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                    {{ __($field['table']['titre']) }}
+                                    <x-forms.sort-icon campo="{{ $field['name'] }}" :sortDir="$sortDir"
+                                        :sortField="$sortField" />
+                                </th>
+                            </div>
                         @endif
                     @endif
                 @endforeach

@@ -11,12 +11,13 @@ class RoleSeeder extends Seeder
 {
     // tabla roles
     protected $roles = [
+        'guest',
         'user',
         'writer',
         'editor',
         'moderator',
-        'cliente',
-        'vendedor',
+        'client',
+        'seller',
         'admin',
         'Super-admin',
 
@@ -56,7 +57,7 @@ class RoleSeeder extends Seeder
         foreach ($this->roles as $rol) {
             $existe = false;
             foreach ($perm as $p) {
-                if ($rol == 'cliente' || $rol == 'vendedor' || $rol == 'user') {
+                if ($rol == 'client' || $rol == 'seller' || $rol == 'user') {
                     $name = $rol . ' ' . $p;
                 } else {
                     $name = $p;
@@ -80,7 +81,7 @@ class RoleSeeder extends Seeder
                 // $role = Role::where('name', 'admin')->get();
                 // dd($role);
                 $role->syncPermissions(Permission::all());
-            } elseif ($value == 'user' || $value == 'cliente' || $value == 'vendedor') {
+            } elseif ($value == 'user' || $value == 'client' || $value == 'seller') {
                 // $role = Role::findByName('user')->get();
                 $role->syncPermissions(Permission::where('name', 'like', "%$value%")->get());
                 // dd($role);

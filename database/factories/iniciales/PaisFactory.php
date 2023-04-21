@@ -23,7 +23,7 @@ class PaisFactory extends Factory
      */
     public function definition()
     {
-        $paises = fncGlob_Files('C:\\laragon\\www\\heroicons\\flags\\',"*","jpeg");
+        $paises = fncGlob_Files('C:\\laragon\\www\\libreria\\heroicons\\flags\\', "*", "jpeg");
         // dd($paises);
 
         foreach ($paises as  $value) {
@@ -39,6 +39,3 @@ class PaisFactory extends Factory
         return [];
     }
 }
-
-
-

@@ -9,7 +9,7 @@ use App\Models\backend\Perfil;
 // agregamos
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\Storage;
 // Spatie
 use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
@@ -21,10 +21,13 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class UserSeeder extends Seeder
-{    // The User model requires this trait
+{
+    // The User model requires this trait
     use HasRoles;
     public function __construct()
     {
+        Storage::deleteDirectory('avatars');
+        Storage::makeDirectory('avatars');
         $users = [
             'admin' => [
                 'name' => 'Super Admin',
@@ -60,7 +63,7 @@ class UserSeeder extends Seeder
                 $language = 'es-ES';
             } else {
                 // dump('creando ' . $user['name']);
-                $u->assignRole('user');
+                $u->assignRole('guest');
                 $theme = 'dark';
                 $language = 'fr-FR';
             }

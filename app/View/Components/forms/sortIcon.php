@@ -8,12 +8,16 @@ use Illuminate\View\Component;
 
 class sortIcon extends Component
 {
+    public $campo, $sortDir, $sortField;
+
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($campo = 'id', $sortDir = 'asc', $sortField = 'id')
     {
-        //
+        $this->campo = $campo;
+        $this->sortDir = $sortDir;
+        $this->sortField = $sortField;
     }
 
     /**
@@ -21,6 +25,7 @@ class sortIcon extends Component
      */
     public function render(): View|Closure|string
     {
+        // dd([$this->sortField, $this->sortDir, $this->campo]);
         return view('components.forms.sort-icon');
     }
 }

@@ -12,6 +12,10 @@
 <!-- FontAwesome 6.2.1 -->
 <!-- <link rel="stylesheet" href="{{asset('assets/fontawesome/css/all.css')}}"> -->
 <link href="{{asset('assets/fontawesome/css/all.min.css')}}" rel="stylesheet">
+<!-- ionicons -->
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<!-- ionicons -->
 <!-- <link href="{{asset('assets/fontawesome/css/fontawesome.css')}}" rel="stylesheet">
 <link href="{{asset('assets/fontawesome/css/brands.css')}}" rel="stylesheet">
 <link href="{{asset('assets/fontawesome/css/solid.css')}}" rel="stylesheet"> -->

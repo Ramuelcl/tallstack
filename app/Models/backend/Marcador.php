@@ -46,6 +46,6 @@ class Marcador extends Model
 
     public function xMovimientos(): MorphToMany
     {
-        return $this->morphedByMany(\App\Models\banca\Movimiento::class, 'marcadorable');
+        return $this->morphedByMany(Movimiento::class, 'marcadorable');
     }
 }

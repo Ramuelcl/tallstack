@@ -21,18 +21,11 @@ class LiveSearch extends Component
         $this->fields =  $fields;
     }
 
-    // public function mount($fields = ['id'])
-    // {
-    //     // dd($fields);
-    //     if (is_null($fields) or sizeof($fields) < 1)
-    //         $this->fields = '';
-    //     else
-    //         $this->fields = implode(', ', $fields);
-    // }
-
     public function render()
     {
-        $this->emit('Search', $this->search);
+        // if ($this->search)
+        //     dd($this->search);
+        $this->emitUp('search', $this->search);
         return view('livewire.live-search');
     }
 

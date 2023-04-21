@@ -40,6 +40,7 @@ class TablaSeeder extends Seeder
                     'descripcion' => null,
                     'activo' => $i ? true : false,
                     'valor1' => $m ?? $m,
+                    'valor2' => null,
                 ]
             );
             if (\is_array($menu1)) {
@@ -53,6 +54,7 @@ class TablaSeeder extends Seeder
                             'descripcion' => null,
                             'activo' => $i ? true : false,
                             'valor1' => $m,
+                            'valor2' => null,
                         ]
                     );
                 }
@@ -73,6 +75,8 @@ class TablaSeeder extends Seeder
                     'nombre' => $value,
                     'descripcion' => null,
                     'activo' => $key ? true : false,
+                    'valor1' => null,
+                    'valor2' => null,
                 ]
             );
         }

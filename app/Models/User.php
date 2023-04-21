@@ -34,6 +34,7 @@ class User extends Authenticatable
         'password',
         'profile_photo_path',
         'is_active',
+        'role',
     ];
 
     /**
@@ -72,6 +73,10 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+    // public function getProfilePhotoPathAttribute()
+    // {
+    //     return $this->attributes['profile_photo_path'];
+    // }
     public function userSetting()
     {
         return $this->hasOne(UserSetting::class);
